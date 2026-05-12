@@ -45,7 +45,8 @@ def cargar_datos_estudiantes():
     df.rename(columns=nuevos_nombres, inplace=True)
     
     # Rellenar los valores nulos (vacíos/sin responder) con la etiqueta "Otros"
-    df.fillna("Otros", inplace=True)
+    # Convertimos el DataFrame a 'object' primero para evitar advertencias de incompatibilidad de tipos
+    df = df.astype(object).fillna("Otros")
 
     return df
 
