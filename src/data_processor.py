@@ -70,3 +70,28 @@ def aplicar_filtros_globales(df):
     )
 
     return df
+
+def verificar_contrasena():
+    """Valida que el usuario tenga la contraseña correcta antes de mostrar el contenido."""
+    def password_entered():
+        # AQUÍ DEFINES TU CONTRASEÑA:
+        if st.session_state["password"] == "UAI":
+            st.session_state["password_correct"] = True
+            del st.session_state["password"]  # Eliminar contraseña por seguridad
+        else:
+            st.session_state["password_correct"] = False
+
+    if st.session_state.get("password_correct", False):
+        return True
+
+    st.title("🔒 Acceso Restringido")
+    st.text_input(
+        "Por favor, introduce la contraseña para acceder al Dashboard:",
+        type="password",
+        on_change=password_entered,
+        key="password"
+    )
+    if "password_correct" in st.session_state and not st.session_state["password_correct"]:
+        st.error("😕 Contraseña incorrecta.")
+    
+    st.stop()  # Detiene la ejecución de la página si no se ha introducido la clave

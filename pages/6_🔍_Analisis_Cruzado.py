@@ -5,9 +5,13 @@ import plotly.express as px
 import pandas as pd
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from src.data_processor import cargar_datos_estudiantes, aplicar_filtros_globales
+from src.data_processor import cargar_datos_estudiantes, aplicar_filtros_globales, verificar_contrasena
 
 st.set_page_config(page_title="Análisis Cruzado", page_icon="🔍", layout="wide")
+
+# Validar contraseña
+verificar_contrasena()
+
 st.title("🔍 Análisis Cruzado Avanzado")
 st.markdown("Cruces de variables para entender mejor el comportamiento y las tendencias segmentadas.")
 

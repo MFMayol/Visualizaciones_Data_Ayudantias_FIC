@@ -5,9 +5,13 @@ import pandas as pd
 import plotly.express as px
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from src.data_processor import cargar_datos_estudiantes, aplicar_filtros_globales
+from src.data_processor import cargar_datos_estudiantes, aplicar_filtros_globales, verificar_contrasena
 
 st.set_page_config(page_title="Evaluación", page_icon="⭐", layout="wide")
+
+# Validar contraseña
+verificar_contrasena()
+
 st.title("⭐ Evaluación de los Ayudantes")
 st.markdown("Análisis de la percepción de los estudiantes sobre la calidad de las ayudantías.")
 

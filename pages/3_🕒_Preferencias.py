@@ -4,9 +4,13 @@ import os
 import plotly.express as px
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from src.data_processor import cargar_datos_estudiantes, aplicar_filtros_globales
+from src.data_processor import cargar_datos_estudiantes, aplicar_filtros_globales, verificar_contrasena
 
 st.set_page_config(page_title="Preferencias", page_icon="🕒", layout="wide")
+
+# Validar contraseña
+verificar_contrasena()
+
 st.title("🕒 Preferencias y Formatos")
 st.markdown("Modalidades, horarios y razones para la baja asistencia a las ayudantías.")
 

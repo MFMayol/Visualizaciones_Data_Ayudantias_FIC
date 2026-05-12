@@ -10,9 +10,13 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from src.data_processor import cargar_datos_estudiantes, aplicar_filtros_globales
+from src.data_processor import cargar_datos_estudiantes, aplicar_filtros_globales, verificar_contrasena
 
 st.set_page_config(page_title="Machine Learning", page_icon="🤖", layout="wide")
+
+# Validar contraseña
+verificar_contrasena()
+
 st.title("🤖 Machine Learning: Segmentación de Estudiantes")
 st.markdown("""
 Esta página utiliza aprendizaje automático no supervisado (**K-Means Clustering**) para encontrar perfiles o "grupos" ocultos de estudiantes basándose en cómo evaluaron a los ayudantes.

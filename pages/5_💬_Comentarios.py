@@ -5,9 +5,13 @@ import matplotlib.pyplot as plt
 from wordcloud import WordCloud, STOPWORDS
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from src.data_processor import cargar_datos_estudiantes, aplicar_filtros_globales
+from src.data_processor import cargar_datos_estudiantes, aplicar_filtros_globales, verificar_contrasena
 
 st.set_page_config(page_title="Comentarios", page_icon="💬", layout="wide")
+
+# Validar contraseña
+verificar_contrasena()
+
 st.title("💬 Comentarios y Sugerencias Abiertas")
 st.markdown("Explora de forma dinámica lo que los estudiantes expresaron en las preguntas de desarrollo.")
 
