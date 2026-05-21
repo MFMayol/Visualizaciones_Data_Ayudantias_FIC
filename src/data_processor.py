@@ -50,6 +50,50 @@ def cargar_datos_estudiantes():
 
     return df
 
+@st.cache_data
+def cargar_datos_docentes():
+    """
+    Carga la base de datos de docentes desde la carpeta 'data'.
+    """
+    directorio_actual = os.path.dirname(os.path.abspath(__file__))
+    ruta_archivo = os.path.join(directorio_actual, '..', 'data', 'BD_Docentes.csv')
+    
+    # Si el archivo aún no existe, devuelve un DataFrame vacío para no romper la app
+    if not os.path.exists(ruta_archivo):
+        return pd.DataFrame()
+        
+    df = pd.read_csv(ruta_archivo, sep=';', encoding='latin-1')
+    
+    # Limpieza de nombres de las columnas
+    nuevos_nombres = {}
+    for col in df.columns:
+        col_lower = col.lower()
+        if 'sede' in col_lower: nuevos_nombres[col] = 'Sede'
+        elif 'hora de inicio' in col_lower: nuevos_nombres[col] = 'Fecha_Respuesta'
+        elif 'curso asociado' in col_lower: nuevos_nombres[col] = 'Curso'
+        elif 'modalidad predominante' in col_lower: nuevos_nombres[col] = 'Modalidad'
+        elif 'asistencia estimada' in col_lower: nuevos_nombres[col] = 'Asistencia_Estimada'
+        elif 'cumplir principalmente' in col_lower: nuevos_nombres[col] = 'Roles_Ayudantia'
+        elif 'conocen el objetivo' in col_lower: nuevos_nombres[col] = 'Claridad_Objetivo'
+        elif 'cambio mejorar' in col_lower and 'valor acad' in col_lower: nuevos_nombres[col] = 'Mejora_Valor_Academico'
+        elif 'valor acad' in col_lower: nuevos_nombres[col] = 'Valor_Academico'
+        elif 'alineados' in col_lower: nuevos_nombres[col] = 'Alineacion'
+        elif 'aprendizaje en su formato' in col_lower: nuevos_nombres[col] = 'Utilidad_Actual'
+        elif 'factores que dan valor' in col_lower: nuevos_nombres[col] = 'Factores_Valor'
+        elif 'roles del equipo' in col_lower: nuevos_nombres[col] = 'Claridad_Roles'
+        elif 'coordinaci' in col_lower and 'frecuencia' in col_lower: nuevos_nombres[col] = 'Coordinacion'
+        elif 'anticipaci' in col_lower: nuevos_nombres[col] = 'Anticipacion_Materiales'
+        elif 'pauta com' in col_lower: nuevos_nombres[col] = 'Pauta_Comun'
+        elif 'obst' in col_lower: nuevos_nombres[col] = 'Obstaculos_Coordinacion'
+        elif 'fortalezas y debilidades' in col_lower: nuevos_nombres[col] = 'Fortalezas_Debilidades'
+        elif 'flexible' in col_lower: nuevos_nombres[col] = 'Estandar_Minimo'
+        elif 'mejora inmediata' in col_lower: nuevos_nombres[col] = 'Mejora_Inmediata'
+        
+    df.rename(columns=nuevos_nombres, inplace=True)
+    df = df.astype(object).fillna("Otros")
+
+    return df
+
 def aplicar_filtros_globales(df):
     """Agrega filtros interactivos en la barra lateral para todas las páginas."""
     st.sidebar.header("🌍 Filtros Globales")
@@ -58,6 +102,16 @@ def aplicar_filtros_globales(df):
         sede_seleccionada = st.sidebar.multiselect("Filtrar por Sede", sedes, default=sedes)
         df = df[df['Sede'].isin(sede_seleccionada)]
         
+    if 'Modalidad' in df.columns:
+        modalidades = df['Modalidad'].dropna().unique().tolist()
+        modalidad_seleccionada = st.sidebar.multiselect("Filtrar por Modalidad", modalidades, default=modalidades)
+        df = df[df['Modalidad'].isin(modalidad_seleccionada)]
+        
+    if 'Modalidad_Preferida' in df.columns:
+        modalidades = df['Modalidad_Preferida'].dropna().unique().tolist()
+        modalidad_seleccionada = st.sidebar.multiselect("Filtrar por Modalidad", modalidades, default=modalidades)
+        df = df[df['Modalidad_Preferida'].isin(modalidad_seleccionada)]
+
     # Añadir botón de exportación en la barra lateral
     st.sidebar.divider()
     st.sidebar.header("💾 Exportar Datos")
